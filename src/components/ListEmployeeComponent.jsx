@@ -20,6 +20,10 @@ class ListEmployeeComponent extends Component {
         alert('Employee deleted successfully => '+ JSON.stringify(id));
     }  
 
+    viewEmployee(id){
+        this.props.history.push(`/view-employee/${id}`);
+    }
+    
     editEmployee(id){
         this.props.history.push(`/update-employee/${id}`);
     } 
@@ -40,7 +44,7 @@ class ListEmployeeComponent extends Component {
             <div>
                 <h2 className="text-center">Employees List</h2>
                 <div className="row"></div>
-                    <button className="btn btn-primary" onClick={this.addEmployee}> Add Employee</button>
+                    <button className="btn btn-primary mb-3" onClick={this.addEmployee}> Add Employee</button>
                 
 
                 <div className="row">
@@ -65,6 +69,7 @@ class ListEmployeeComponent extends Component {
                                         <td>
                                             <button onClick = { () => this.editEmployee(employee.id)} className="btn btn-info">Update</button>                                           
                                             <button onClick = { () => this.deleteEmployee(employee.id)} className="btn btn-danger" style={{marginLeft: "10px"}}>Delete</button>
+                                            <button onClick = { () => this.viewEmployee(employee.id)} className="btn btn-info" style={{marginLeft: "10px"}}>View</button>
                                         </td>   
                                     </tr>
                                 ) 
