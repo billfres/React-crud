@@ -14,7 +14,7 @@ class UpdateEmployeeComponent extends Component {
         }
         this.changeFirstNameHandler = this.changeFirstNameHandler.bind(this); 
         this.changeLastNameHandler = this.changeLastNameHandler.bind(this); 
-        //this.changeEmailHandler = this.changeEmailHandler.bind(this); 
+        this.changeEmailHandler = this.changeEmailHandler.bind(this); 
         this.updateEmployee = this.updateEmployee.bind(this);
     }
     
@@ -32,12 +32,12 @@ class UpdateEmployeeComponent extends Component {
     updateEmployee = (e) => {
         e.preventDefault();
         let employee = {firstName: this.state.firstName, lastName: this.state.lastName, emailId: this.state.emailId};
-        console.log('employee =>' + JSON.stringify(employee));
-       // alert('Employee updated successfully => '+ JSON.stringify(employee));
+        //console.log('employee =>' + JSON.stringify(employee));
+        alert('Employee updated successfully => '+ JSON.stringify(employee));
 
-       /* EmployeeService.updateEmployee(employee).then(res =>{
+       EmployeeService.updateEmployeeById(this.state.id,employee).then( res =>{
             this.props.history.push('/employees');
-        });*/
+        });
     }
 
     changeFirstNameHandler = (event) => {
@@ -47,7 +47,7 @@ class UpdateEmployeeComponent extends Component {
     changeLastNameHandler = (event) => {
         this.setState({lastName: event.target.value});
     }
-
+ 
     changeEmailHandler = (event) => {
         this.setState({emailId: event.target.value});
     }
