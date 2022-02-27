@@ -6,6 +6,8 @@ class CreateEmployeeComponent extends Component {
         super(props)
         
         this.state = {
+            //Step 2 (gettting an id)
+            id: this.props.match.params.id,
             firstName: '',
             lastName: '',
             emailId: ''
@@ -13,18 +15,43 @@ class CreateEmployeeComponent extends Component {
         this.changeFirstNameHandler = this.changeFirstNameHandler.bind(this); 
         this.changeLastNameHandler = this.changeLastNameHandler.bind(this); 
         this.changeEmailHandler = this.changeEmailHandler.bind(this); 
-        this.saveEmployee = this.saveEmployee.bind(this);
+        this.saveOrUpdateEmployee = this.saveOrUpdateEmployee.bind(this);
     }
 
-    saveEmployee = (e) => {
+    //Step 3 to update using one component
+    componentDidMount(){
+        if(this.state.id === '_add'){
+            return
+        }else{
+            EmployeeService.getEmployeeById(this.state.id).then((res) => {
+                let employee = res.data;
+                this.setState({
+                    firstName: employee.firstName, 
+                    lastName: employee.lastName, 
+                    emailId: employee.emailId
+                });
+            });
+        }
+    }
+
+    saveOrUpdateEmployee = (e) => {
         e.preventDefault();
         let employee = {firstName: this.state.firstName, lastName: this.state.lastName, emailId: this.state.emailId};
         console.log('employee =>' + JSON.stringify(employee));
-        alert('Employee added successfully => '+ JSON.stringify(employee));
-
-        EmployeeService.createEmployee(employee).then(res =>{
-            this.props.history.push('/employees');
-        });
+        
+        //Step 5
+        if(this.state.id === '_add'){
+            alert('Employee added successfully => '+ JSON.stringify(employee));
+            EmployeeService.createEmployee(employee).then(res =>{
+                this.props.history.push('/employees');
+            });
+        }else{
+            alert('Employee updated successfully => '+ JSON.stringify(employee));
+            EmployeeService.updateEmployeeById(this.state.id,employee).then( res =>{
+                this.props.history.push('/employees');
+            });
+        }
+        
     }
 
     changeFirstNameHandler = (event) => {
@@ -43,13 +70,24 @@ class CreateEmployeeComponent extends Component {
         this.props.history.push('/employees');
     }
 
+   getTitle = () => {
+        
+        if(this.state.id === '_add'){
+            return <h2 className = "text-center">Add Employee</h2>
+        }else{
+            return <h2 className = "text-center">Update Employee</h2>
+        }
+    }
+
     render() {
         return (
             <div>
                 <div className = "container">
                     <div className = "row">
                         <div className = "card col-md-6 offset-md-3 offset-md-3">
-                            <h3 className = "text-center">Add An Employee</h3>
+                                {
+                                    this.getTitle()
+                                }
                             <div className = "card-body">
                                 <form >
                                     <div className = "form-group">
@@ -68,7 +106,7 @@ class CreateEmployeeComponent extends Component {
                                         value={this.state.emailId} onChange={this.changeEmailHandler} />
                                     </div>
 
-                                    <button className="btn btn-success" onClick={this.saveEmployee} style={{marginTop: "5px"}}>Save</button>
+                                    <button className="btn btn-success" onClick={this.saveOrUpdateEmployee} style={{marginTop: "5px"}}>Save</button>
                                     <button className="btn btn-danger" onClick={this.cancel.bind(this)} style={{marginLeft: "10px",marginTop: "5px"}}>Cancel</button>
                                 </form>
                             </div>

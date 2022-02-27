@@ -24,8 +24,9 @@ class ListEmployeeComponent extends Component {
         this.props.history.push(`/view-employee/${id}`);
     }
     
+    //Step 7: let's change : update-employee to add-employee
     editEmployee(id){
-        this.props.history.push(`/update-employee/${id}`);
+        this.props.history.push(`/add-employee/${id}`);
     } 
 
     componentDidMount(){
@@ -34,9 +35,10 @@ class ListEmployeeComponent extends Component {
         });
     }
    
+    //Step 6: let's add /-1 or _add at the edn of: push('/add-employee');
     //whener we click on addEmployee, we'd navigate then to createEmployee
     addEmployee(){
-        this.props.history.push('/add-employee');
+        this.props.history.push('/add-employee/_add');
     }
 
     render() {
